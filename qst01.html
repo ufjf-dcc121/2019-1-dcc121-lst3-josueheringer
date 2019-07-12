@@ -4,58 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Jogo da Velha</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>Jogo da velha</h1>
-    <div class="jogo" style="display: grid;grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;grid-gap: 2em;">
-        <div id="0" onclick="abrir(0)" style="border: 1px solid black"></div>
-        <div id="1" onclick="abrir(1)" style="border: 1px solid black"></div>
-        <div id="2" onclick="abrir(2)" style="border: 1px solid black"></div>
-        <div id="3" onclick="abrir(3)" style="border: 1px solid black"></div>
-        <div id="4" onclick="abrir(4)" style="border: 1px solid black"></div>
-        <div id="5" onclick="abrir(5)" style="border: 1px solid black"></div>
-        <div id="6" onclick="abrir(6)" style="border: 1px solid black"></div>
-        <div id="7" onclick="abrir(7)" style="border: 1px solid black"></div>
-        <div id="8" onclick="abrir(8)" style="border: 1px solid black"></div>
+    <div class="container">
+        <h2>Vez do Jogador: <span class="jogador"></span></h2>
+        <div class="jogo">
+            <div id="0" class="posicao" onclick="abrir(0)"></div>
+            <div id="1" onclick="abrir(1)" class="posicao"></div>
+            <div id="2" onclick="abrir(2)" class="posicao"></div>
+            <div id="3" onclick="abrir(3)" class="posicao"></div>
+            <div id="4" onclick="abrir(4)" class="posicao"></div>
+            <div id="5" onclick="abrir(5)" class="posicao"></div>
+            <div id="6" onclick="abrir(6)" class="posicao"></div>
+            <div id="7" onclick="abrir(7)" class="posicao"></div>
+            <div id="8" onclick="abrir(8)" class="posicao"></div>
+        </div>
+        <button type="button" class="apagar" name="apagar">Resetar</button>
     </div>
-
-    <button type="button" name="apagar">Resetar</button>
 
     <script>
         var elementos = [];
+        var vez = 0;
+        var jogador = document.querySelector(".jogador");
+        jogador.textContent = "Jogador 1";
         for (let index = 0; index < 9; index++) {
             elementos[index] = document.getElementById(index);
         }
-        function abrir(value) {
-            if (elementos[value].textContent == "0") {
-                alert("Já foi inserido um elemento aqui");
-            } else {
-                document.addEventListener("keydown", function teste(e) {
-                    if (e.keyCode == "88") {
-                        elementos[value].textContent = "X";
-                    } else {
-                        if (e.keyCode == "96") {
-                            elementos[value].textContent = "0";
-                        }
-                    }
-                });
-            }
-        }
         var apagar = document.getElementsByTagName("button")[0];
+        function abrir(id) {
+            if (elementos[id].textContent == "") {
+                if (vez % 2 == 0) {
+                    elementos[id].textContent = "X";
+                    jogador.textContent = "Jogador 2";
+                } else if (vez % 2 == 1) {
+                    elementos[id].textContent = "0";
+                    jogador.textContent = "Jogador 1";
+                }
+                vez++;
+            }
+            resultado();
+        }
         apagar.addEventListener('click', reset);
         function reset() {
-            for (let index = 0; index < 9; index++) {
+            for (var index = 0; index < 9; index++) {
                 elementos[index].textContent = "";
             }
+            var vez = 0;
+            jogador.textContent = "Jogador 1";
             alert("Jogo resetado");
         }
-
-        function teste(e) {
-            console.log(e.keyCode);
+        function resultado(){
+            if(elementos[0].textContent == elementos[1].textContent == elementos[2].textContent && elementos[0].textContent != ""){
+                if(elementos[0].textContent == "X"){
+                    console.log("Jogador 1 ganhou");
+                }else{
+                    console.log("Jogador 2 ganhou");
+                }
+            }
         }
-
     </script>
 </body>
 
