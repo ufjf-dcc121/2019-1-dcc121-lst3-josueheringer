@@ -23,11 +23,14 @@
             <div id="8" onclick="abrir(8)" class="posicao"></div>
         </div>
         <button type="button" class="apagar" name="apagar">Resetar</button>
-    </div>
 
+    </div>
+    <h3>Vencedor: <span id="vencedor"></span></h3>
     <script>
+        var resultadoFinal = document.getElementById("vencedor");
         var elementos = [];
         var vez = 0;
+
         var jogador = document.querySelector(".jogador");
         jogador.textContent = "Jogador 1";
         for (let index = 0; index < 9; index++) {
@@ -52,17 +55,36 @@
             for (var index = 0; index < 9; index++) {
                 elementos[index].textContent = "";
             }
-            var vez = 0;
-            jogador.textContent = "Jogador 1";
             alert("Jogo resetado");
+            location.reload();
         }
-        function resultado(){
-            if(elementos[0].textContent == elementos[1].textContent == elementos[2].textContent && elementos[0].textContent != ""){
-                if(elementos[0].textContent == "X"){
-                    console.log("Jogador 1 ganhou");
-                }else{
-                    console.log("Jogador 2 ganhou");
+        function resultado() {
+            for (let i = 0; i < 3; i++) {
+                if (elementos[3 * i].textContent == elementos[(3 * i) + 1].textContent && elementos[3 * i].textContent == elementos[(3 * i) + 2].textContent && elementos[3 * i].textContent != "") {
+                    vencedor(elementos[3 * i].textContent);
                 }
+            }
+            if (elementos[0].textContent == elementos[4].textContent && elementos[0].textContent == elementos[8].textContent && elementos[0].textContent != "") {
+                vencedor(elementos[0].textContent);
+            }
+            if(elementos[2].textContent == elementos[4].textContent && elementos[2].textContent == elementos[6].textContent && elementos[2].textContent !=""){
+                vencedor(elementos[2].textContent);
+            }
+            if (elementos[0].textContent == elementos[3].textContent && elementos[0].textContent == elementos[6].textContent && elementos[0].textContent != "") {
+                vencedor(elementos[0].textContent);
+            }
+            if (elementos[1].textContent == elementos[4].textContent && elementos[1].textContent == elementos[7].textContent && elementos[1].textContent != "") {
+                vencedor(elementos[2].textContent);
+            }
+            if (elementos[2].textContent == elementos[5].textContent && elementos[2].textContent == elementos[8].textContent && elementos[2].textContent != "") {
+                vencedor(elementos[2].textContent);
+            }
+        }
+        function vencedor(value) {
+            if (value == "X") {
+                resultadoFinal.textContent = "Hugo";
+            } else {
+                resultadoFinal.textContent = "Josué";
             }
         }
     </script>

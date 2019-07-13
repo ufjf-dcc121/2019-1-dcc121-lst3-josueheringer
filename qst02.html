@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Torre de Hanoi</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <table style="width: 100%">
+        <thead>
+            <th onclick="jogar(0)">Pilha 1</th>
+            <th onclick="jogar(1)">Pilha 2</th>
+            <th onclick="jogar(2)">Pilha 3</th>
+        </thead>
+        <tbody>
+            <tr id="pilh1"></tr>
+            <tr id="pilha2"></tr>
+            <tr id="pilha3"></tr>
+        </tbody>
+    </table>
+    <button type="button" class="apagar" name="apagar">Resetar</button>
+    <div class="centralizar">Jogadas: <span id="jogadas">0</span></div>
+
+    <button type="button" class="oculto">Primeiro</button>
+    <button type="button" class="oculto">Segundo</button>
+    <button type="button" class="oculto">Terceiro</button>
+    <script>
+        var pilha1 = [1,0, 2];
+        pilha1.sort();
+        console.log(pilha1);
+        var pilha2 = [];
+        var pilha3 = [];
+        var jogadas = 0;
+        var primeiroBotao = document.getElementsByTagName("button")[1];
+        var segundoBotao = document.getElementsByTagName("button")[2];
+        var terceiroBotao = document.getElementsByTagName("button")[3];
+        var pilha1Html = document.getElementsByTagName("tr")[1];
+        var pilha2Html = document.getElementsByTagName("tr")[2];
+        var pilha3Html = document.getElementsByTagName("tr")[3];
+        desenha();
+
+        function jogar(value) {
+            if (pilha1.indexOf(value) > 0) {
+                if (Math.max(...pilha2) < value) {
+                    segundoBotao.classList.remove("oculto");
+                    segundoBotao.addEventListener("click", function () { trocarArray(value, pilha1, pilha2) }, false);
+                }
+                if (Math.max(...pilha3) < value) {
+                    terceiroBotao.classList.remove("oculto");
+                    terceiroBotao.addEventListener("click", function () { trocarArray(value, pilha1, pilha2) });
+                }
+            }
+            else {
+                if (pilha2.indexOf(value) > 0) {
+                    if (Math.max(...pilha1) < value) {
+                        primeiroBotao.classList.remove("oculto");
+                        primeiroBotao.addEventListener("click", function () { trocarArray(value, pilha2, pilha1) });
+
+                    }
+                    if (Math.max(...pilha3) < value) {
+                        terceiroBotao.classList.remove("oculto");
+                        terceiroBotao.addEventListener("click", function () { trocarArray(value, pilha2, pilha3) });
+
+                    }
+                } else {
+                    if (pilha3.indexOf(value) > 0) {
+                        if (Math.max(...pilha1) < value) {
+                            primeiroBotao.classList.remove("oculto");
+                            primeiroBotao.addEventListener("click", function () { trocarArray(value, pilha3, pilha1) });
+                        }
+                        if (Math.max(...pilha2) < value) {
+                            segundoBotao.classList.remove("oculto");
+                            segundoBotao.addEventListener("click", function () { trocarArray(value, pilha3, pilha2) });
+                        }
+                    }
+                }
+            }
+        }
+        function trocarArray(value, array, newArray) {
+            newArray.push(value);
+
+            array.splice(value, 1, "");
+            jogadas++;
+            document.querySelector("#jogadas").textContent = jogadas;
+            removeBotoes();
+            desenha();
+        }
+        function removeBotoes() {
+            segundoBotao.classList.add("oculto");
+            primeiroBotao.classList.add("oculto");
+            terceiroBotao.classList.add("oculto");
+
+        }
+        var apagar = document.getElementsByTagName("button")[0];
+        apagar.addEventListener('click', reset);
+        function reset() {
+            alert("Jogo resetado");
+            location.reload();
+        }
+        function desenha() {
+            pilha1Html.textContent = "";
+            pilha2Html.textContent = "";
+            pilha3Html.textContent = "";
+            for (var i = 0; i < 3; i++) {
+                var novoTd = document.createElement("td");
+                novoTd.addEventListener("click", jogar);
+                novoTd.innerText = pilha1[i];
+                pilha1Html.appendChild(novoTd);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
